@@ -6,8 +6,13 @@ export default function NavigationBar() {
   return (
     <div className="NavigationBar">
       <div className="logo">
-        <Link to="/">Team Matrix</Link>
+        <Link to="/" className="logotxt">
+          Team Matrix
+        </Link>
       </div>
+      <Link className="nortxt" to="/allcow">
+        All Cows
+      </Link>
     </div>
   );
 }

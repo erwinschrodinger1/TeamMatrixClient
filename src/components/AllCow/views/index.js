@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Icon from "../../../cow.png";
-import axios from "axios";
-import BaseURL from "../../../config/httpConfig/baseURL";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,8 +14,10 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import "./CowPage.sass";
-export default function CowPage() {
+let temp1 = [81, 92, 83, 84, 95, 86, 87, 88, 89, 90];
+let temp2 = [84, 98, 73, 84, 91, 80, 78, 81, 84, 99];
+let temp3 = [89, 92, 71, 88, 95, 82, 74, 89, 80, 98];
+export default function AllCow() {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -28,26 +27,13 @@ export default function CowPage() {
     Tooltip,
     Legend
   );
-
-  const params = useParams();
-  console.log(params);
-  // const position = [27.61933, 85.537292];
-  const [position, setPosition] = useState([27.61933, 85.537292]);
-
   const icon = new L.icon({
     iconUrl: Icon,
     iconSize: [32, 32],
   });
-
-  const [temp, setTemp] = useState([]);
-
-  useEffect(() => {
-    axios.post(BaseURL + "/api/getCow", { name: params.id }).then((res) => {
-      setTemp(res.data.temp);
-      setPosition([res.data.location.lat, res.data.location.lng]);
-    });
-  }, []);
-
+  const position1 = [27.61933, 85.537292];
+  const position2 = [27.61933, 85.537382];
+  const position3 = [27.61933, 85.537572];
   const options = {
     responsive: true,
     plugins: {
@@ -61,33 +47,43 @@ export default function CowPage() {
     },
   };
 
-  const labels = Array.from({ length: temp.length }, (_, i) => i + 1);
+  const labels = Array.from(
+    { length: Math.max(temp1.length, temp2.length, temp3.length) },
+    (_, i) => i + 1
+  );
 
   const data = {
     labels,
     datasets: [
       {
-        label: "Temperature",
-        data: temp,
+        label: "Temperature Cow1",
+        data: temp1,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+      {
+        label: "Temperature Cow2",
+        data: temp2,
+        borderColor: "rgb(25,2, 132)",
+        backgroundColor: "rgba(25,2, 132, 0.5)",
+      },
+      {
+        label: "Temperature Cow3",
+        data: temp3,
+        borderColor: "rgb(25,20, 255)",
+        backgroundColor: "rgba(25,20,255, 0.5)",
       },
     ],
   };
 
   return (
-    <div className="CowPage">
-      <h1>Cow Name: {params.id}</h1>
-      <h2>Temperatures: </h2>
-      {/* {temp.map((tempIn) => (
-        <p>{tempIn}</p>
-      ))} */}
+    <div>
+      <h1>Graph Showing the Temperature Difference</h1>
       <Line options={options} data={data} />
-
-      <h1>Gps Location: </h1>
+      <h1>Map locating all the cows</h1>
       <div className="map">
         <MapContainer
-          center={position}
+          center={position3}
           zoom={13}
           scrollWheelZoom={false}
           className="map"
@@ -96,8 +92,14 @@ export default function CowPage() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={position} icon={icon}>
-            <Popup>{params.id}</Popup>
+          <Marker position={position1} icon={icon}>
+            <Popup>Cow1</Popup>
+          </Marker>
+          <Marker position={position2} icon={icon}>
+            <Popup>Cow2</Popup>
+          </Marker>
+          <Marker position={position3} icon={icon}>
+            <Popup>Cow3</Popup>
           </Marker>
         </MapContainer>
       </div>

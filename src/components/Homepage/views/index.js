@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TableContent from "../../TableContent/views";
-// import "./Homepage.sass";
+import "./Homepage.sass";
 import axios from "axios";
 import BaseURL from "../../../config/httpConfig/baseURL";
 export default function Homepage(props) {
@@ -11,7 +11,7 @@ export default function Homepage(props) {
     });
   }, []);
   return (
-    <div>
+    <div className="Homepage">
       <h1>List of Cows</h1>
       {data.map((cow, index) => {
         return <TableContent key={index} data={cow} index={index} />;
