@@ -1,11 +1,12 @@
 import React from "react";
 import "./NavigationBar.sass";
+import { Link } from "react-router-dom";
 
 export default function NavigationBar() {
   return (
     <div className="NavigationBar">
       <div className="logo">
-        <h1>Team Matrix</h1>
+        <Link to="/">Team Matrix</Link>
       </div>
     </div>
   );
